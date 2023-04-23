@@ -1,0 +1,83 @@
+[gd_scene load_steps=7 format=3 uid="uid://dh2yoni6j0p48"]
+
+[ext_resource type="Script" path="res://Player.gd" id="1_jqdq4"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_0xqm8"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_bdtd8"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_u2i0k"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_cvwtf"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_qic8l"]
+
+[node name="CharacterBody3D" type="CharacterBody3D"]
+script = ExtResource("1_jqdq4")
+runSpd = 7
+
+[node name="Head" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.526, 0, 0, 0, 0.238, 0, 0, 0, 0.526, 0, 1.45192, 0)
+shape = SubResource("CylinderShape3D_0xqm8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Head"]
+transform = Transform3D(0.95057, 0, 0, 0, 2.10084, 0, 0, 0, 0.95057, 0, 0, 0)
+mesh = SubResource("SphereMesh_bdtd8")
+
+[node name="Char" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.509872, 0)
+shape = SubResource("SphereShape3D_u2i0k")
+
+[node name="ChestRay" type="RayCast3D" parent="Char"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.604325, -0.40949)
+target_position = Vector3(0, -0.3, 0)
+
+[node name="HeadCenterRay" type="RayCast3D" parent="Char"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.926129, 0.0843028)
+target_position = Vector3(0, 1, 0)
+
+[node name="HeadRays" type="Node3D" parent="Char"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.509872, 0)
+
+[node name="Center" type="RayCast3D" parent="Char/HeadRays"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.88005, -0.40949)
+target_position = Vector3(0, -0.3, 0)
+
+[node name="Right" type="RayCast3D" parent="Char/HeadRays"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.36, 1.88, -0.409)
+target_position = Vector3(0, -0.3, 0)
+
+[node name="Left" type="RayCast3D" parent="Char/HeadRays"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.36, 1.88, -0.409)
+target_position = Vector3(0, -0.3, 0)
+
+[node name="CenterUp" type="RayCast3D" parent="Char/HeadRays"]
+transform = Transform3D(1, 0, 0, 0, -0.734879, -0.678198, 0, 0.678198, -0.734879, 0, 1.88028, -0.40936)
+target_position = Vector3(0, -1.342, 0)
+
+[node name="RightUp" type="RayCast3D" parent="Char/HeadRays"]
+transform = Transform3D(1, 0, 0, 0, -0.734879, -0.678198, 0, 0.678198, -0.734879, 0.36, 1.87989, -0.409065)
+target_position = Vector3(0, -1.342, 0)
+
+[node name="LeftUp" type="RayCast3D" parent="Char/HeadRays"]
+transform = Transform3D(1, 0, 0, 0, -0.734879, -0.678198, 0, 0.678198, -0.734879, -0.36, 1.87989, -0.409065)
+target_position = Vector3(0, -1.342, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Char"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.490128, 0)
+mesh = SubResource("CapsuleMesh_cvwtf")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Char/MeshInstance3D"]
+transform = Transform3D(0.0348162, -0.311633, 0.297832, 0, 0.305161, 0.309177, -0.270771, -0.0400704, 0.0382958, 0, 0.258819, 0.559251)
+mesh = SubResource("CylinderMesh_qic8l")
+
+[node name="SpringArmPivot" type="Node3D" parent="."]
+
+[node name="SpringArm3D" type="SpringArm3D" parent="SpringArmPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.698, 0)
+spring_length = 3.0
+margin = 0.001
+
+[node name="Camera3D" type="Camera3D" parent="SpringArmPivot/SpringArm3D"]
+h_offset = 0.5
