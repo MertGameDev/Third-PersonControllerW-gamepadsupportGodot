@@ -60,6 +60,10 @@ shape = SubResource("BoxShape3D_l6py4")
 mesh = SubResource("BoxMesh_duhqg")
 skeleton = NodePath("../../StaticBody3D2")
 
+[node name="Label3D" type="Label3D" parent="StaticBody3D4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.328074, 1.04649)
+text = "Ladder"
+
 [node name="StaticBody3D3" type="StaticBody3D" parent="."]
 transform = Transform3D(19.8206, 0, 0, 0, 7.89529, 0, 0, 0, 27.9844, 13.3968, 3.71689, -20.3705)
 
@@ -69,3 +73,18 @@ shape = SubResource("BoxShape3D_l6py4")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D3"]
 mesh = SubResource("BoxMesh_duhqg")
 skeleton = NodePath("../../StaticBody3D2")
+
+[node name="Label3D2" type="Label3D" parent="."]
+transform = Transform3D(3, 0, 0, 0, 8.30765, 0, 0, 0, 0.211984, 4.9924, 5.84, -6.19873)
+text = "Controls
+"
+
+[node name="Label3D3" type="Label3D" parent="."]
+transform = Transform3D(3, 0, 0, 0, 8.30765, 0, 0, 0, 0.211984, 8.07047, 3.55468, -6.19873)
+pixel_size = 0.003
+text = "walk wasd,Lstick
+Run Shift,L3
+Jump Space,A(xbox)
+Crouch Control,B(xbox)
+Interact e,X(xbox)
+Aim LeftMouseButton,LB(XBox)"
