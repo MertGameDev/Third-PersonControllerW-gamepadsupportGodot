@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://bgp0kx476urcf"]
+
+[ext_resource type="Texture2D" uid="uid://dh45hsdmvh26x" path="res://Textures/Walls/rustymetalcol.jpg" id="1_kqqgd"]
+[ext_resource type="Texture2D" uid="uid://dygykw6vv1e8s" path="res://Textures/Walls/rustymetalnorm.jpg" id="2_lk25d"]
+
+[resource]
+albedo_texture = ExtResource("1_kqqgd")
+normal_enabled = true
+normal_texture = ExtResource("2_lk25d")
+uv1_scale = Vector3(2, 2, 2)

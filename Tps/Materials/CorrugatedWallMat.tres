@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://5vpkl27eq1ll"]
+
+[ext_resource type="Texture2D" uid="uid://bfm5o4uot5r2r" path="res://Textures/Walls/CorrugatedWallCol.jpg" id="1_cns0g"]
+[ext_resource type="Texture2D" uid="uid://dhb5jla1124di" path="res://Textures/Walls/CorrugatedWallNorm.jpg" id="2_5le13"]
+
+[resource]
+albedo_texture = ExtResource("1_cns0g")
+normal_enabled = true
+normal_texture = ExtResource("2_5le13")
+heightmap_texture = ExtResource("1_cns0g")

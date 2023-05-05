@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://bqe77eno2m42t"]
+
+[ext_resource type="Texture2D" uid="uid://ctqsvbq4ka6yc" path="res://Textures/Walls/blackconcretecol.jpg" id="1_tbwql"]
+[ext_resource type="Texture2D" uid="uid://bx76bepfg7m7m" path="res://Textures/Walls/blackconcretenorm.jpg" id="2_17vvf"]
+
+[resource]
+albedo_texture = ExtResource("1_tbwql")
+normal_enabled = true
+normal_texture = ExtResource("2_17vvf")
+uv1_scale = Vector3(2.146, 2.146, 2.146)

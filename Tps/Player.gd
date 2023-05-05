@@ -1,6 +1,9 @@
 extends CharacterBody3D
 
+class_name Player
+
 ##Variables
+@export var MaxHp = 100
 @export var spd = 5
 @export var runSpd = 20
 @export var jumpVel = 4.5
@@ -10,7 +13,7 @@ var velY = 0
 var looksense = ProjectSettings.get_setting("player/look_sensitivity")
 var contlooksense = ProjectSettings.get_setting("player/cont_look_sensitivity")
 var running = false
-const LerpVal = .1
+const LerpVal = 0.1
 var canJump = true
 var Crouching = false
 var aiming = false
@@ -19,6 +22,7 @@ var lClimping = false
 var snap = 0
 var time = 0
 var touchingL = false
+var Hp = 100
 
 ##ObjectCall
 @onready var char = $Char
@@ -57,9 +61,11 @@ func climb():
 		h_twn.tween_property(self, "global_transform:origin", h_mvmtn, h_move_time)
 	canJump = true
 
+
 ##CapturingMouse 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+
 
 func _physics_process(delta):
 	if Input.is_action_just_pressed("run_input"):
@@ -71,8 +77,7 @@ func _physics_process(delta):
 ##Checking if it is a ladder
 	var static_body = $Char/ChestRay.get_collider()
 	if static_body != null:
-		var meta = static_body.get_meta("Ladder")
-		if meta == true:
+		if static_body and static_body.is_in_group("Ladder"):
 			touchingL = true
 
 	if time > 0:
@@ -116,7 +121,7 @@ func _physics_process(delta):
 				else:
 					velocity.x = move_toward(velocity.x,0, spd)
 					velocity.z = move_toward(velocity.z,0, spd)
-				char.rotation.y = lerp_angle(springpivot.rotation.y, 0, LerpVal)
+				char.rotation.y = lerp_angle(springpivot.rotation.y, 0, 0)
 			could_climb = true
 			canJump = true
 			if Input.is_action_just_pressed("interact_input") and touchingL and $Char/ChestRay.is_colliding() and $Char/HeadRays/Right.is_colliding() and $Char/HeadRays/Left.is_colliding():
@@ -167,7 +172,7 @@ func _physics_process(delta):
 			else:
 				velocity.x = move_toward(velocity.x,0, spd)
 				velocity.z = move_toward(velocity.z,0, spd)
-			char.rotation.y = lerp_angle(springpivot.rotation.y, 0, LerpVal)
+			char.rotation.y = lerp_angle(springpivot.rotation.y, 0, 0)
 		if time == 0:
 			if Input.is_action_just_pressed("crouch_input") and !$Char/HeadCenterRay.is_colliding():
 				time = 5
@@ -183,21 +188,28 @@ func _physics_process(delta):
 	elif Input.is_action_just_pressed("jump_input") and can_climb() and !Crouching:
 		climb()
 	else:
-		velY -= grav * delta  + .1
+		if velY < 0:
+			velY -= grav * delta  + .5
+		else:
+			velY -= grav * delta
 	if !lClimping:
 		velocity.y = velY
 	else:
 		velocity.y = snap
 	move_and_slide()
 	
-		##QuickQuit
+		##Camerazoom
 	if Input.is_action_pressed("aim_input"):
 		aiming = true
 		springarm.spring_length = 2
 	else:
 		springarm.spring_length = 3
 		aiming = false
-	
+		
+	if running and hVel:
+		springarm.spring_length = 3.2
+	else:
+		springarm.spring_length = 3
 	##QuickQuit
 	if Input.is_action_just_pressed("ui_cancel"):
 		get_tree().quit()
@@ -220,4 +232,12 @@ func _process(delta):
 	springpivot.rotate_y(rotation_vector.x * contlooksense)
 	springarm.rotate_x(rotation_vector.y * contlooksense)
 	springarm.rotation.x = clamp(springarm.rotation.x, -PI/4, PI/4)
+	if Hp > MaxHp:
+		Hp = MaxHp
+	if Hp < 0:
+		Hp = 0
+	$Node2D/TextureProgressBar.max_value = MaxHp
+	$Node2D/TextureProgressBar.value = Hp
 	
+func applyDamage(damage) -> void:
+	Hp -= damage

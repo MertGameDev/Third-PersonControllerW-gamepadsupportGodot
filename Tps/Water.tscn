@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://djkbunb4imq8q"]
+
+[ext_resource type="Shader" path="res://Water.gdshader" id="1_pqkwg"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_c5ytn"]
+subdivide_width = 500
+subdivide_depth = 500
+orientation = 1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h3pm4"]
+render_priority = 0
+shader = ExtResource("1_pqkwg")
+shader_parameter/height_scale = 0.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r7m61"]
+next_pass = SubResource("ShaderMaterial_h3pm4")
+
+[node name="Node3D" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("QuadMesh_c5ytn")
+surface_material_override/0 = SubResource("StandardMaterial3D_r7m61")

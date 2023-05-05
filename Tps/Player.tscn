@@ -1,8 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://dh2yoni6j0p48"]
+[gd_scene load_steps=9 format=3 uid="uid://dh2yoni6j0p48"]
 
 [ext_resource type="Script" path="res://Player.gd" id="1_jqdq4"]
+[ext_resource type="Texture2D" uid="uid://cn4rafdh35dyc" path="res://HpImage.png" id="2_bnjtt"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_0xqm8"]
+height = 3.52053
+radius = 0.822114
 
 [sub_resource type="SphereMesh" id="SphereMesh_bdtd8"]
 
@@ -12,16 +15,20 @@
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_qic8l"]
 
-[node name="CharacterBody3D" type="CharacterBody3D"]
+[sub_resource type="LabelSettings" id="LabelSettings_tdhnu"]
+line_spacing = 2.981
+font_size = 275
+
+[node name="Player" type="CharacterBody3D" groups=["Player"]]
 script = ExtResource("1_jqdq4")
 runSpd = 7
 
 [node name="Head" type="CollisionShape3D" parent="."]
-transform = Transform3D(0.526, 0, 0, 0, 0.238, 0, 0, 0, 0.526, 0, 1.45192, 0)
+transform = Transform3D(0.603, 0, 0, 0, 0.328, 0, 0, 0, 0.603, 0, 1.23128, 0)
 shape = SubResource("CylinderShape3D_0xqm8")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Head"]
-transform = Transform3D(0.95057, 0, 0, 0, 2.10084, 0, 0, 0, 0.95057, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.568879, -0.720003)
 mesh = SubResource("SphereMesh_bdtd8")
 
 [node name="Char" type="CollisionShape3D" parent="."]
@@ -44,11 +51,11 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.8
 target_position = Vector3(0, -0.3, 0)
 
 [node name="Right" type="RayCast3D" parent="Char/HeadRays"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.36, 1.88, -0.409)
+transform = Transform3D(0.707107, -0.707107, 3.09086e-08, 0, -4.37114e-08, -1, 0.707107, 0.707107, -3.09086e-08, 0.36, 1.88, -0.409)
 target_position = Vector3(0, -0.3, 0)
 
 [node name="Left" type="RayCast3D" parent="Char/HeadRays"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.36, 1.88, -0.409)
+transform = Transform3D(0.707107, 0.707107, -3.09086e-08, 0, -4.37114e-08, -1, -0.707107, 0.707107, -3.09086e-08, -0.36, 1.88, -0.409)
 target_position = Vector3(0, -0.3, 0)
 
 [node name="CenterUp" type="RayCast3D" parent="Char/HeadRays"]
@@ -76,8 +83,28 @@ mesh = SubResource("CylinderMesh_qic8l")
 
 [node name="SpringArm3D" type="SpringArm3D" parent="SpringArmPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.698, 0)
-spring_length = 3.0
-margin = 0.001
+spring_length = 4.0
+margin = 0.1
 
 [node name="Camera3D" type="Camera3D" parent="SpringArmPivot/SpringArm3D"]
 h_offset = 0.5
+
+[node name="Node2D" type="Node2D" parent="."]
+scale = Vector2(0.08, 0.08)
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="Node2D"]
+offset_right = 1600.0
+offset_bottom = 1600.0
+fill_mode = 4
+texture_under = ExtResource("2_bnjtt")
+texture_progress = ExtResource("2_bnjtt")
+tint_under = Color(0.227451, 0.152941, 0.262745, 0.254902)
+tint_progress = Color(0.262745, 0, 0, 0.803922)
+
+[node name="Label" type="Label" parent="Node2D"]
+offset_left = 375.0
+offset_top = 562.5
+offset_right = 1475.0
+offset_bottom = 887.5
+text = "Health"
+label_settings = SubResource("LabelSettings_tdhnu")

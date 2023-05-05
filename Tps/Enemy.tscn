@@ -1,0 +1,49 @@
+[gd_scene load_steps=5 format=3 uid="uid://fw3v02yyckx2"]
+
+[ext_resource type="Script" path="res://Enemy.gd" id="1_e2w5u"]
+[ext_resource type="PackedScene" uid="uid://bv7jl7qmmrr7v" path="res://EnemyAttack.tscn" id="2_i8asp"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_vkbnk"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_nlwm0"]
+
+[node name="CharacterBody3D" type="CharacterBody3D" groups=["Enemy"]]
+script = ExtResource("1_e2w5u")
+enemy_attack = ExtResource("2_i8asp")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_vkbnk")
+
+[node name="SpawnPoint" type="Marker3D" parent="CollisionShape3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D"]
+mesh = SubResource("CapsuleMesh_nlwm0")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="CollisionShape3D"]
+transform = Transform3D(0.605, 0, 0, 0, -6.99382e-09, -0.281, 0, 0.16, -1.22829e-08, 0, 0.465116, -0.370244)
+mesh = SubResource("CapsuleMesh_nlwm0")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="CollisionShape3D"]
+transform = Transform3D(0.633789, -6.68183e-09, -0.478737, -1.03073, -1.19526e-08, -0.294371, -2.5187e-08, 0.321, -2.09263e-08, 0.00155985, 0.251454, 0.341376)
+mesh = SubResource("CapsuleMesh_nlwm0")
+
+[node name="attackcheck" type="RayCast3D" parent="CollisionShape3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.259674, -0.292869)
+target_position = Vector3(0, 0, -1)
+
+[node name="playercheck" type="Node3D" parent="CollisionShape3D"]
+
+[node name="playercheckStraigt" type="RayCast3D" parent="CollisionShape3D/playercheck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+target_position = Vector3(0, 0, -9.396)
+
+[node name="playercheckDown" type="RayCast3D" parent="CollisionShape3D/playercheck"]
+transform = Transform3D(1, 0, 0, 0, 0.849128, 0.528186, 0, -0.528186, 0.849128, 0, 0.6, 0)
+target_position = Vector3(0, 0, -3)
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+
+[node name="FaceDir" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)

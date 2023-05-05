@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://dnvlbgsmwoiy"]
+
+[ext_resource type="Texture2D" uid="uid://bqd1kkn37boy4" path="res://Textures/Walls/Graffitywalcol.jpg" id="1_qmksa"]
+[ext_resource type="Texture2D" uid="uid://cdpo35u8v7u0a" path="res://Textures/Walls/Graffitynorm.jpg" id="2_8u4at"]
+
+[resource]
+albedo_texture = ExtResource("1_qmksa")
+normal_enabled = true
+normal_texture = ExtResource("2_8u4at")
+uv1_scale = Vector3(3.575, 3.132, 4.674)

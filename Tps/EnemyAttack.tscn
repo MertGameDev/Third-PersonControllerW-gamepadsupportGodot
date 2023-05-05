@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://bv7jl7qmmrr7v"]
+
+[ext_resource type="Script" path="res://Enemy_Attack.gd" id="1_c6ncc"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1aion"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_n6ky7"]
+
+[node name="Area3D" type="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.00434721)
+script = ExtResource("1_c6ncc")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_1aion")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D"]
+mesh = SubResource("BoxMesh_n6ky7")

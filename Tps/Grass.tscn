@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://coam8qrctm5pr"]
+
+[ext_resource type="Material" uid="uid://cxnbq6qjsxubj" path="res://Materials/Grass1Mat.tres" id="2_xrj77"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_waapg"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("PlaneMesh_waapg")
+surface_material_override/0 = ExtResource("2_xrj77")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.707107, 0.707107, -3.09086e-08, 0, -4.37114e-08, -1, -0.707107, 0.707107, -3.09086e-08, 0, 0, 0)
+mesh = SubResource("PlaneMesh_waapg")
+surface_material_override/0 = ExtResource("2_xrj77")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.707107, 0.707107, -3.09086e-08, 0, -4.37114e-08, -1, -0.707107, -0.707107, 3.09086e-08, 0, 0, 0)
+mesh = SubResource("PlaneMesh_waapg")
+surface_material_override/0 = ExtResource("2_xrj77")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0, 0, 0)
+mesh = SubResource("PlaneMesh_waapg")
+surface_material_override/0 = ExtResource("2_xrj77")
