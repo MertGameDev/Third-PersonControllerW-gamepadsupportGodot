@@ -23,6 +23,7 @@ var snap = 0
 var time = 0
 var touchingL = false
 var Hp = 100
+var damage = 30
 
 ##ObjectCall
 @onready var char = $Char
@@ -74,6 +75,9 @@ func _physics_process(delta):
 		else:
 			running = true
 
+	var viewColl = $SpringArmPivot/SpringArm3D/Camera3D/ShootingPoss.get_collision_point()
+	var drection: Vector3 = (viewColl - global_transform.origin).normalized()
+	
 ##Checking if it is a ladder
 	var static_body = $Char/ChestRay.get_collider()
 	if static_body != null:
@@ -121,7 +125,13 @@ func _physics_process(delta):
 				else:
 					velocity.x = move_toward(velocity.x,0, spd)
 					velocity.z = move_toward(velocity.z,0, spd)
-				char.rotation.y = lerp_angle(springpivot.rotation.y, 0, 0)
+				var angle: float = atan2(drection.x, drection.z)
+				if $SpringArmPivot/SpringArm3D/Camera3D/ShootingPoss.is_colliding():
+					char.rotation.y = angle
+				else:
+					char.rotation.y = lerp_angle(springpivot.rotation.y, 0, 0)
+				if Input.is_action_just_pressed("shoot_input"):
+					$Char/ShootingRay.visible = true
 			could_climb = true
 			canJump = true
 			if Input.is_action_just_pressed("interact_input") and touchingL and $Char/ChestRay.is_colliding() and $Char/HeadRays/Right.is_colliding() and $Char/HeadRays/Left.is_colliding():
@@ -172,12 +182,20 @@ func _physics_process(delta):
 			else:
 				velocity.x = move_toward(velocity.x,0, spd)
 				velocity.z = move_toward(velocity.z,0, spd)
-			char.rotation.y = lerp_angle(springpivot.rotation.y, 0, 0)
+				var angle: float = atan2(drection.x, drection.z)
+				if $SpringArmPivot/SpringArm3D/Camera3D/ShootingPoss.is_colliding():
+					char.rotation.y = lerp_angle(angle,0,0)
+				else:
+					char.rotation.y = lerp_angle(springpivot.rotation.y, 0, 0)
+			if Input.is_action_just_pressed("shoot_input"):
+				$Char/ShootingRay.visible = true
 		if time == 0:
 			if Input.is_action_just_pressed("crouch_input") and !$Char/HeadCenterRay.is_colliding():
 				time = 5
 				Crouching = false
 
+	if $SpringArmPivot/SpringArm3D/Camera3D/ShootingPoss.is_colliding():
+		$Char/ShootingRay.look_at(drection, $Char/ShootingRay.rotation)
 	##CollisionCheckForGravity
 	if is_on_floor():
 		velY = 0
@@ -213,6 +231,7 @@ func _physics_process(delta):
 	##QuickQuit
 	if Input.is_action_just_pressed("ui_cancel"):
 		get_tree().quit()
+	
 	pass
 
 ##Camera(MOUSE)
@@ -236,8 +255,19 @@ func _process(delta):
 		Hp = MaxHp
 	if Hp < 0:
 		Hp = 0
-	$Node2D/TextureProgressBar.max_value = MaxHp
-	$Node2D/TextureProgressBar.value = Hp
+	$Control/TextureProgressBar.max_value = MaxHp
+	$Control/TextureProgressBar.value = Hp
 	
 func applyDamage(damage) -> void:
 	Hp -= damage
+
+
+func _on_ray_cast_3d_visibility_changed():
+	if $Char/ShootingRay.is_colliding():
+		var shootposs = $Char/ShootingRay.get_collision_point()
+		var enemy_check = $Char/ShootingRay.get_collider()
+		if enemy_check.is_in_group("Enemy"):
+			enemy_check.applyDamage(damage)
+		else:
+			pass
+	$Char/ShootingRay.visible = false

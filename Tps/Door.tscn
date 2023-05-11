@@ -1,0 +1,58 @@
+[gd_scene load_steps=8 format=3 uid="uid://b7ym58036ju0s"]
+
+[ext_resource type="Texture2D" uid="uid://dvw2c86w2up8s" path="res://Textures/Objects/BlackDoorcol.png" id="1_7vmk1"]
+[ext_resource type="Material" uid="uid://bgp0kx476urcf" path="res://Materials/RustyMetalMat.tres" id="2_cxgv1"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jdnv8"]
+albedo_texture = ExtResource("1_7vmk1")
+uv1_scale = Vector3(2.475, 1.924, 2.285)
+uv1_offset = Vector3(0.086, 0.038, 0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_2cf88"]
+lightmap_size_hint = Vector2i(10, 36)
+material = SubResource("StandardMaterial3D_jdnv8")
+size = Vector3(1.1, 2.5, 0.2)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_tkktr"]
+points = PackedVector3Array(-0.55, -1.25, -0.1, -0.55, -1.25, 0.1, -0.55, 1.25, -0.1, 0.55, -1.25, -0.1, 0.55, -1.25, 0.1, -0.55, 1.25, 0.1, 0.55, 1.25, -0.1, 0.55, 1.25, 0.1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_6qom4"]
+size = Vector3(0.25, 2.5, 0.25)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_eu8u4"]
+size = Vector3(0.25, 2.5, 0.25)
+
+[node name="Door" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.24152, 0)
+
+[node name="HingeJoint3D" type="HingeJoint3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.403233, 0, 0)
+node_a = NodePath("../DoorSelf")
+node_b = NodePath("../DoorFrame")
+params/bias = 0.33
+angular_limit/enable = true
+
+[node name="DoorSelf" type="RigidBody3D" parent="."]
+collision_layer = 8
+collision_mask = 15
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="DoorSelf"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.152648, 0, 0)
+mesh = SubResource("BoxMesh_2cf88")
+skeleton = NodePath("")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DoorSelf"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.152648, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_tkktr")
+
+[node name="DoorFrame" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="DoorFrame"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.524125, 0, 0)
+material_override = ExtResource("2_cxgv1")
+mesh = SubResource("BoxMesh_6qom4")
+skeleton = NodePath("../CollisionShape3D")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DoorFrame"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.524125, 0, 0)
+shape = SubResource("BoxShape3D_eu8u4")

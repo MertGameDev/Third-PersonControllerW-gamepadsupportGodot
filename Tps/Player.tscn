@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dh2yoni6j0p48"]
+[gd_scene load_steps=8 format=3 uid="uid://dh2yoni6j0p48"]
 
 [ext_resource type="Script" path="res://Player.gd" id="1_jqdq4"]
 [ext_resource type="Texture2D" uid="uid://cn4rafdh35dyc" path="res://HpImage.png" id="2_bnjtt"]
@@ -14,10 +14,6 @@ radius = 0.822114
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_cvwtf"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_qic8l"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_tdhnu"]
-line_spacing = 2.981
-font_size = 275
 
 [node name="Player" type="CharacterBody3D" groups=["Player"]]
 script = ExtResource("1_jqdq4")
@@ -79,6 +75,13 @@ skeleton = NodePath("../..")
 transform = Transform3D(0.0348162, -0.311633, 0.297832, 0, 0.305161, 0.309177, -0.270771, -0.0400704, 0.0382958, 0, 0.258819, 0.559251)
 mesh = SubResource("CylinderMesh_qic8l")
 
+[node name="ShootingRay" type="RayCast3D" parent="Char"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.050723, 0.852678, -0.766429)
+visible = false
+target_position = Vector3(0, 0, -99)
+debug_shape_custom_color = Color(1, 0, 0, 1)
+debug_shape_thickness = 5
+
 [node name="SpringArmPivot" type="Node3D" parent="."]
 
 [node name="SpringArm3D" type="SpringArm3D" parent="SpringArmPivot"]
@@ -89,22 +92,40 @@ margin = 0.1
 [node name="Camera3D" type="Camera3D" parent="SpringArmPivot/SpringArm3D"]
 h_offset = 0.5
 
-[node name="Node2D" type="Node2D" parent="."]
-scale = Vector2(0.08, 0.08)
+[node name="ShootingPoss" type="RayCast3D" parent="SpringArmPivot/SpringArm3D/Camera3D"]
+target_position = Vector3(0, 0, -100)
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="Node2D"]
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Crossair" type="ColorRect" parent="Control"]
+layout_mode = 0
+offset_left = 573.0
+offset_top = 321.0
+offset_right = 579.0
+offset_bottom = 327.0
+mouse_filter = 2
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="Control"]
+layout_mode = 1
 offset_right = 1600.0
 offset_bottom = 1600.0
+scale = Vector2(0.1, 0.1)
 fill_mode = 4
 texture_under = ExtResource("2_bnjtt")
 texture_progress = ExtResource("2_bnjtt")
 tint_under = Color(0.227451, 0.152941, 0.262745, 0.254902)
 tint_progress = Color(0.262745, 0, 0, 0.803922)
 
-[node name="Label" type="Label" parent="Node2D"]
-offset_left = 375.0
-offset_top = 562.5
-offset_right = 1475.0
-offset_bottom = 887.5
+[node name="Label" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = 52.0
+offset_top = 66.0
+offset_right = 1152.0
+offset_bottom = 443.0
 text = "Health"
-label_settings = SubResource("LabelSettings_tdhnu")
+
+[connection signal="visibility_changed" from="Char/ShootingRay" to="." method="_on_ray_cast_3d_visibility_changed"]

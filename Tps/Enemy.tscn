@@ -1,11 +1,27 @@
-[gd_scene load_steps=5 format=3 uid="uid://fw3v02yyckx2"]
+[gd_scene load_steps=11 format=3 uid="uid://fw3v02yyckx2"]
 
 [ext_resource type="Script" path="res://Enemy.gd" id="1_e2w5u"]
 [ext_resource type="PackedScene" uid="uid://bv7jl7qmmrr7v" path="res://EnemyAttack.tscn" id="2_i8asp"]
+[ext_resource type="PackedScene" uid="uid://b5ji4udtfhaf3" path="res://cone.tscn" id="3_0aox6"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_vkbnk"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_nlwm0"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_it5ns"]
+points = PackedVector3Array(-2.38419e-07, -1.17652, 3.9125, -0.763658, -1.17652, 3.83667, 0.762892, -1.17652, 3.83667, -2.38419e-07, 6.64849, 0, -1.49744, -1.17652, 3.61454, 1.49668, -1.17652, 3.61454, -2.76663, -1.17652, 2.76587, -2.17378, -1.17652, 3.25301, 2.17302, -1.17652, 3.25301, 2.76587, -1.17652, 2.76587, 3.25301, -1.17652, 2.17302, 3.61454, -1.17652, 1.49668, 3.83667, -1.17652, 0.762892, 3.9125, -1.17652, 0, 3.83667, -1.17652, -0.763658, 3.61454, -1.17652, -1.49744, 3.25301, -1.17652, -2.17378, 2.76587, -1.17652, -2.76663, 2.17302, -1.17652, -3.25378, 1.49668, -1.17652, -3.61531, 0.762892, -1.17652, -3.83744, -2.38419e-07, -1.17652, -3.9125, -0.763658, -1.17652, -3.83744, -1.49744, -1.17652, -3.61531, -2.17378, -1.17652, -3.25378, -2.76663, -1.17652, -2.76663, -3.25378, -1.17652, -2.17378, -3.61531, -1.17652, -1.49744, -3.83744, -1.17652, -0.763658, -3.9125, -1.17652, 0, -3.83744, -1.17652, 0.762892, -3.61531, -1.17652, 1.49668, -3.25378, -1.17652, 2.17302)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_374tb"]
+albedo_color = Color(1, 0, 1, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_11hnf"]
+material = SubResource("StandardMaterial3D_374tb")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5vcl3"]
+albedo_color = Color(0.0941176, 1, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ljx0m"]
+material = SubResource("StandardMaterial3D_5vcl3")
 
 [node name="CharacterBody3D" type="CharacterBody3D" groups=["Enemy"]]
 script = ExtResource("1_e2w5u")
@@ -30,20 +46,45 @@ transform = Transform3D(0.633789, -6.68183e-09, -0.478737, -1.03073, -1.19526e-0
 mesh = SubResource("CapsuleMesh_nlwm0")
 
 [node name="attackcheck" type="RayCast3D" parent="CollisionShape3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.259674, -0.292869)
+transform = Transform3D(1, 0, 0, 0, 0.610118, -0.792311, 0, 0.792311, 0.610118, 0, -0.340153, -0.292869)
 target_position = Vector3(0, 0, -1)
 
 [node name="playercheck" type="Node3D" parent="CollisionShape3D"]
 
 [node name="playercheckStraigt" type="RayCast3D" parent="CollisionShape3D/playercheck"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-target_position = Vector3(0, 0, -9.396)
+target_position = Vector3(0, 0, -100)
 
-[node name="playercheckDown" type="RayCast3D" parent="CollisionShape3D/playercheck"]
-transform = Transform3D(1, 0, 0, 0, 0.849128, 0.528186, 0, -0.528186, 0.849128, 0, 0.6, 0)
-target_position = Vector3(0, 0, -3)
+[node name="VisionCone" type="Area3D" parent="CollisionShape3D/playercheck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.562586, -3.77855)
+
+[node name="Cone" parent="CollisionShape3D/playercheck/VisionCone" instance=ExtResource("3_0aox6")]
+transform = Transform3D(4.75, 0, 0, 0, -1.36948e-07, -1.003, 0, 3.133, -4.38425e-08, 0, 0, -17.436)
+visible = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CollisionShape3D/playercheck/VisionCone"]
+transform = Transform3D(4.75, 0, 0, 0, -1.36948e-07, -1.003, 0, 3.133, -4.38425e-08, 0, 0, -17.436)
+shape = SubResource("ConvexPolygonShape3D_it5ns")
+
+[node name="LastPoint" type="Marker3D" parent="CollisionShape3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D/LastPoint"]
+mesh = SubResource("CapsuleMesh_11hnf")
+
+[node name="Origin" type="Marker3D" parent="CollisionShape3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D/Origin"]
+mesh = SubResource("BoxMesh_ljx0m")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_max_distance = 20.01
+avoidance_enabled = true
+radius = 1.0
+neighbor_distance = 0.5
 
 [node name="FaceDir" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+
+[connection signal="velocity_computed" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_velocity_computed"]
